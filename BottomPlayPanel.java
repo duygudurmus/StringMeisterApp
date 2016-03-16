@@ -19,15 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-/**
- * BottomPlayPanel represents a tablature panel for displaying notes and song
- * information panel
- *
- */
-
 public class BottomPlayPanel extends JPanel {
 
-	//properties
 	private ArrayList<Image> tabs;
 	private Image temp;
 	private final int imageNumber = 38;// total image number
@@ -39,7 +32,7 @@ public class BottomPlayPanel extends JPanel {
 
 	private JLabel infoLabel;
 	private String songName;
-	private String songDiff;//song difficulty
+	private String songDiff;// difficulty
 
 	private final int infoSize = 50; // size of info panel
 	private final int mainSize = 150; // size of main panel
@@ -54,24 +47,23 @@ public class BottomPlayPanel extends JPanel {
 
 	public BottomPlayPanel(Song input) {
 
+		// setting images and collecting them
 		tabs = new ArrayList<Image>();
 		count = 0;
 		this.input = input;
 		
-		//updating speed according to difficulty of the song
-		if (input.getDifficulty().equals("easy"))
-			speed = speed * 0.60;
-		else if ((input.getDifficulty().equals("medium")))
-			speed = speed * 0.70;
+		if ( input.getDifficulty().equals("easy"))
+			speed = speed*0.60;
+		else if ( ( input.getDifficulty().equals("medium")))
+			speed = speed*0.70;
 
-		//collecting images
 		for (int i = 1; i <= imageNumber; i++) {
 			temp = Toolkit.getDefaultToolkit().createImage(
 					"songs/" + input.getName() + "/pics/" + i + ".png");
 			tabs.add(temp);
 		}
 
-		// setting main panel and info panel
+		// setting infoPanel and buttons
 		setPreferredSize(new Dimension(1024, mainSize));
 		setLayout(new BorderLayout());
 
@@ -120,7 +112,7 @@ public class BottomPlayPanel extends JPanel {
 	private class Stick {
 		private final int length;
 		private double x = 0;
-		private Color c = Color.red; //initial color
+		private Color c = Color.red;
 		private int width = 10; // width of the stick
 
 		private Stick() {
@@ -174,7 +166,7 @@ public class BottomPlayPanel extends JPanel {
 	public long getStartTime() {
 		return startTime;
 	}
-
+	
 	public void setColor(Color c) {
 		stick.setColor(c);
 	}

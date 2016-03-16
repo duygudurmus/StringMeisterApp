@@ -25,10 +25,13 @@ public class Initializer extends JPanel {
 	private int noteNumber;
 	private int fret;
 	private int string;
+	private ArrayList<Integer> stringPack;
+	private ArrayList<Integer> fretPack;
 	private PlaySound cleanGuitar;
 	private UpperPlay upperPanel;
 	private BottomPlayPanel tabPlay;
 	private Song userSong;
+	private JLabel keyPress;
 	private boolean left;
 	private IntervalChecker checker;
 	int lastNumber;
@@ -39,14 +42,16 @@ public class Initializer extends JPanel {
 	private JButton options;
 	private Score playScore;
 	private Achievements playMedal;
+	private PlayMenuScreen playMenuScreen;
 	private JButton menuButton;
+	private long playTime;
 	private ImageIcon menuButtonImage = new ImageIcon("menu.jpg");
 	private PlayMenuScreen prev;
 
 	// Constructor
 	public Initializer(Song userSong , User player , PlayMenuScreen prev) throws Exception {
 		
-		//Setes up the menu button and the action listener
+		this.prev = prev;
 		 menuButton = new JButton(menuButtonImage);
 		 menuButton.addActionListener( new ActionListener()  {
 			 public void actionPerformed(ActionEvent e)
@@ -62,8 +67,7 @@ public class Initializer extends JPanel {
 		 
 		 });
 
-		//Sets up the variables required
-		this.prev = prev;
+		
 		score = new JLabel(" Score:");
 		score.setBorder(BorderFactory.createEtchedBorder());
 		score.setForeground(Color.white);
@@ -72,6 +76,8 @@ public class Initializer extends JPanel {
 		checker = new IntervalChecker(userSong);
 		// Creating and setting up variables
 		this.userSong = userSong;
+		stringPack = new ArrayList<Integer>();
+		fretPack = new ArrayList<Integer>();
 		cleanGuitar = new PlaySound();
 		upperPanel = new UpperPlay(userSong);
 		tabPlay = new BottomPlayPanel(userSong);
@@ -79,11 +85,10 @@ public class Initializer extends JPanel {
 		rewind = new JButton("Stop");
 		options = new JButton("Options");
 		
-		//Sets accordingly if the player is lefty
 		if ( player.getHand() == 0)
 			setLeft(true);
 			
-		// Adds play and rewind and options button at the bottom
+		// Adds play and rewind button at the bottom
 		play.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				upperPanel.start();
@@ -94,7 +99,6 @@ public class Initializer extends JPanel {
 				//checker.setStart( e.getWhen());
 			}
 		});
-		
 		options.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				options.setFocusable(false);
@@ -123,11 +127,8 @@ public class Initializer extends JPanel {
 				}
 			}
 		});
-		
-		rewind.setFocusable(false);//gets the focus off the clicked keys for listener to work properly
+		rewind.setFocusable(false);
 		options.setFocusable(false);
-		
-		//Adds the rewind/stop button
 		rewind.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				upperPanel.stop();
@@ -153,6 +154,7 @@ public class Initializer extends JPanel {
 		string = 0;
 
 		// Adding and creating everything else
+		keyPress = new JLabel("Current note is: " + noteNumber);
 		add(menuButton);
 		add(score);
 		add(upperPanel);
@@ -346,7 +348,7 @@ public class Initializer extends JPanel {
 					break;
 				}
 
-				// Plays if only string is pressed or note is pressed
+				// Plays if only string is pressed or bote is pressed
 				case KeyEvent.VK_6: {
 					string = 6;
 					noteNumber = 13 * (string - 1) + fret;

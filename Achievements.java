@@ -1,9 +1,3 @@
-/*Class Description: Achievements class which takes user, score and interval
- *checker as parameters. It contains strings, user, userProfile and score as 
- *properties. It has a method of updateAchievement which update the achievements
- *of the user.
- */
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -14,59 +8,57 @@ public class Achievements
 
 	//Properties
 	private User user;
-	
 	private UserProfile tempProfile;
-	
 	private Score score;
-	
 	private String songName;
 	private String difficulty;
 	private String text;
 	
-	//Constructor
-	public Achievements(User user, Score score, IntervalChecker i) throws IOException 
+	//Constructors
+	public Achievements( final User user, Score score, IntervalChecker i) throws IOException 
 	{
+		text = "" + user.getHand();
 		this.user = user;
 		this.score = score;
-		
-		//getting the name of song, difficulty and hand 
-		//from other classes
-		text = "" + user.getHand();
 		songName = i.getSong().getName();
 		difficulty = i.getSong().getDifficulty();
 
-		//creating a temporary profile to update the user's text file after the user
-		//earning achievement 
 		tempProfile = new UserProfile(user.getName() + ".txt");
 		tempProfile.add(user.getName() + user.getPassword() + text + user.getAchievements());
+		
+		System.out.println(user.getName());
 		tempProfile.add(user.getPassword());
-		tempProfile.add(text);
+		tempProfile.add( text);
 		tempProfile.add(user.getAchievements());
 		
 		String s = user.getName()+"|"+user.getPassword()+"|"+ text +"|"+user.getAchievements()+"|";
 		
-		FileWriter fooWriter = new FileWriter(user.getName()+".txt", false);
-		                                                     
+		FileWriter fooWriter = new FileWriter(user.getName()+".txt", false); // true to append
+		                                                     // false to overwrite.
 		fooWriter.write( s);
 		fooWriter.close();
 
 	}
 	
-	//Updating the achievements of the user in the text file by overwriting the file after playing the game
-	public void updateAchievement() throws IOException {
+	
+	
+	//Method
+	
+	public User updateAchievement() throws IOException {
 		
 		String s = user.getName()+"|"+user.getPassword()+"|"+ text +"|"+ achievementType()+"|";
 		
-		FileWriter fooWriter = new FileWriter(user.getName()+".txt", false); 
-		                                                    
+		FileWriter fooWriter = new FileWriter(user.getName()+".txt", false); // true to append
+		                                                     // false to overwrite.
 		fooWriter.write( s);
 		fooWriter.close();
+		return user;
 		
 	}
 	
 	public String achievementType()
 	{
-		if(score.CalculateScorePercentage() >= 40)
+		if(score.CalculateScorePercentage() >= 60)
 		{
 			if(difficulty.equals("real"))
 				return "Master," + user.getName() + ", Real, " + songName;
